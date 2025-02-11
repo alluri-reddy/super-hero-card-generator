@@ -25,9 +25,9 @@ steps:
   id: 'Deploy to GKE'
   env:
   - 'KUBECONFIG=/workspace/.kube/config'
-  - 'CLOUDSDK_COMPUTE_REGION=us-central1'  # Replace with your cluster's region
-  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'  # Replace with your cluster's zone
-  - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'  # Replace with your cluster's name
+  - 'CLOUDSDK_COMPUTE_REGION=us-central1' 
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'  
+  - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'  
   args:
   - 'set'
   - 'image'
