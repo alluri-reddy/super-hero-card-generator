@@ -13,6 +13,19 @@ steps:
   - 'push'
   - 'gcr.io/sustained-works-450506-q5/my-app:$SHORT_SHA'
 
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: 'Get Cluster Credentials'
+  entrypoint: 'gcloud'
+  args:
+  - 'container'
+  - 'clusters'
+  - 'get-credentials'
+  - 'autopilot-cluster-1'
+  - '--region'
+  - 'us-central1'
+  - '--project'
+  - 'sustained-works-450506-q5'
+
 - name: 'gcr.io/cloud-builders/kubectl'
   id: 'Deploy to GKE'
   args:
@@ -21,12 +34,9 @@ steps:
   - 'deployment/my-app-deployment'
   - 'my-app=gcr.io/sustained-works-450506-q5/my-app:$SHORT_SHA'
   - '--namespace=default'
-  - '--kubeconfig'
-  - '/workspace/.kube/config'
 
 images:
 - 'gcr.io/sustained-works-450506-q5/my-app:$SHORT_SHA'
 
 options:
   logging: CLOUD_LOGGING_ONLY
-
