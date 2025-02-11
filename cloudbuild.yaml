@@ -15,19 +15,16 @@ steps:
 
 - name: 'gcr.io/cloud-builders/gcloud'
   id: 'Get Cluster Credentials'
-  entrypoint: 'gcloud'
+  entrypoint: 'bash'
   args:
-  - 'container'
-  - 'clusters'
-  - 'get-credentials'
-  - 'autopilot-cluster-1'
-  - '--region'
-  - 'us-central1'
-  - '--project'
-  - 'sustained-works-450506-q5'
+  - '-c'
+  - |
+    gcloud container clusters get-credentials autopilot-cluster-1 --region us-central1 --project sustained-works-450506-q5
 
 - name: 'gcr.io/cloud-builders/kubectl'
   id: 'Deploy to GKE'
+  env:
+  - 'KUBECONFIG=/workspace/.kube/config'
   args:
   - 'set'
   - 'image'
@@ -40,3 +37,5 @@ images:
 
 options:
   logging: CLOUD_LOGGING_ONLY
+  timeout: 1200s
+
