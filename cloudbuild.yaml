@@ -1,0 +1,25 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'Build Docker Image'
+  args:
+  - 'build'
+  - '-t'
+  - 'gcr.io/sustained-works-450506-q5/my-app:$SHORT_SHA'
+  - '.'
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'Push Docker Image'
+  args:
+  - 'push'
+  - 'gcr.io/sustained-works-450506-q5/my-app:$SHORT_SHA'
+- name: 'gcr.io/cloud-builders/kubectl'
+  id: 'Deploy to GKE'
+  args:
+  - 'set'
+  - 'image'
+  - 'deployment/my-app-deployment'
+  - 'my-app=gcr.io/sustained-works-450506-q5/my-app:$SHORT_SHA'
+  - '--namespace=default'
+  - '--kubeconfig'
+  - '/workspace/.kube/config'
+images:
+- 'gcr.io/sustained-works-450506-q5/my-app:$SHORT_SHA'
